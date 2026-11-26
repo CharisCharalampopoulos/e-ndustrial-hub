@@ -1,0 +1,260 @@
+body {
+  margin: 0;
+  background: #eee7df;
+  color: #2b1b12;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 20px;
+  background: #faf5ef;
+}
+#home {
+  text-align: center;
+}
+
+#home > a,
+#services h3 a,
+#support-form button[type="submit"] {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #9c6a42;
+  border-radius: 8px;
+  background: #d9963b;
+  color: #2b1b12;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#home > a {
+  margin-top: 32px;
+}
+
+#home > p a {
+  color: #75452a;
+}
+main {
+  background-image: url("background.png");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#support-form label {
+  display: block;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+#support-form label + br {
+  display: none;
+}
+
+#support-form select,
+#support-form textarea,
+#support-form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 10px;
+  border: 1px solid #bda391;
+  border-radius: 0;
+  background-color: #fcf9f5;
+  color: #2b1b12;
+  font: inherit;
+}
+
+#support-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.app-name {
+  margin: 0;
+  text-align: center;
+  font-family: "Kavoon", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #17110d;
+}
+#support-form fieldset {
+  margin: 24px 0 16px;
+  padding: 12px;
+  border: 1px solid #bda391;
+  background-color: #fcf9f5;
+}
+
+#support-form legend {
+  margin-inline: auto;
+  padding-inline: 6px;
+}
+
+#support-form fieldset p {
+  margin: 0 0 12px;
+}
+
+#support-form fieldset p:last-child {
+  margin-bottom: 0;
+}
+
+#support-form fieldset label {
+  text-align: left;
+}
+#confirmation {
+  padding-top: clamp(80px, 26vh, 280px);
+  text-align: center;
+}
+
+#confirmation h2 {
+  margin: 0 0 32px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+#confirmation a {
+  display: block;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background-color: #d9963b;
+  color: #2b1b12;
+  text-decoration: none;
+}
+#service-map .leaflet-popup-content a[href="#request"] {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid #b48761;
+  border-radius: 6px;
+  background-color: #f2e1cd;
+  color: #2b1b12;
+  text-decoration: none;
+}
+#home:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  min-height: max(420px, calc(100dvh - 90px));
+  text-align: center;
+}
+
+#home > a[href="#services"] {
+  margin-top: clamp(48px, 16vh, 160px);
+}
+
+#home > p:last-child {
+  margin: auto 0 0;
+  padding-top: 24px;
+}
+#services {
+  text-align: center;
+}
+
+#services h3 {
+  margin: 32px 0 6px;
+}
+
+#services h3 + p {
+  margin: 0;
+  color: #75452a;
+  line-height: 1.4;
+}
+
+#services > a[href="#home"] {
+  display: block;
+  width: fit-content;
+  margin-top: 32px;
+}
+.app-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#home > p:last-child a,
+.map-link {
+  font-weight: 700;
+}
+
+main {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+#services:not([hidden]),
+#request:not([hidden]),
+#map:not([hidden]) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+#services h3 {
+  margin: clamp(40px, 7vh, 72px) 0 6px;
+}
+
+#request > form {
+  margin-top: 20px;
+}
+
+#map > h2 {
+  margin: 36px 0 8px;
+  font-size: 22px;
+  text-align: center;
+}
+
+#map > p {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.screen-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.screen-nav .back-arrow {
+  grid-column: 1;
+  justify-self: start;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: #000;
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.screen-nav .map-link {
+  grid-column: 2;
+  color: #75452a;
+}
+#support-form .field-missing label::after {
+  content: " \26A0\FE0E";
+  color: #a65314;
+  font-weight: 700;
+}
+
+#support-form .field-missing :is(input, select, textarea) {
+  border-color: #a65314;
+}
+#support-form #submit-request:disabled {
+  background-color: #eeeeee;
+  border-color: #d6d6d6;
+  color: #666666;
+  cursor: default;
+}

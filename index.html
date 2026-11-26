@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>e-ndustrial Hub</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    #submit-request[hidden] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="app-name"><a href="#home">e-ndustrial Hub</a></h1>
+
+    <section id="home">
+      <p style="text-align: center;">
+        Συντήρηση - Επισκευή - Διάγνωση<br>
+        Βιομηχανικού Εξοπλισμού
+      </p>
+
+      <a href="#services">Αίτημα υποστήριξης</a>
+      <p><a class="map-link" href="#map">Χάρτης</a></p>
+    </section>
+
+    <section id="services" aria-label="Υπηρεσίες συντήρησης" hidden>
+      <h3><a href="#request">Προληπτική συντήρηση</a></h3>
+      <p>Προγραμματισμένοι έλεγχοι και εργασίες για την πρόληψη βλαβών.</p>
+
+      <h3><a href="#request">Επισκευές</a></h3>
+      <p>Αποκατάσταση βλαβών και αντικατάσταση φθαρμένων εξαρτημάτων.</p>
+
+      <h3><a href="#request">Τεχνική διάγνωση</a></h3>
+      <p>Έλεγχος του εξοπλισμού για τον εντοπισμό της αιτίας του προβλήματος.</p>
+
+      <nav class="screen-nav" aria-label="Πλοήγηση σελίδας">
+        <a class="back-arrow" href="#home" aria-label="Πίσω στην αρχική">←</a>
+        <a class="map-link" href="#map">Χάρτης</a>
+      </nav>
+    </section>
+
+    <section id="request" aria-label="Αίτημα υποστήριξης" hidden>
+      <form id="support-form">
+        <p>
+          <label for="equipment">Τύπος εξοπλισμού</label><br>
+          <select id="equipment" name="equipment" required>
+            <option value="">Επιλέξτε</option>
+            <option>Γερανός</option>
+            <option>Αντλία</option>
+            <option>Ταινιόδρομος</option>
+            <option>Άλλο</option>
+          </select>
+        </p>
+
+        <p>
+          <label for="problem">Περιγραφή προβλήματος</label><br>
+          <textarea id="problem" name="problem" rows="4"
+                    placeholder="π.χ. Δεν έχει πίεση η ανάρτηση της πρέσας"
+                    required></textarea>
+        </p>
+
+        <p>
+          <label for="priority">*Προτεραιότητα</label><br>
+          <select id="priority" name="priority">
+            <option value="">Χωρίς προτεραιότητα</option>
+            <option>Χαμηλή</option>
+            <option>Κανονική</option>
+            <option>Υψηλή</option>
+          </select>
+        </p>
+
+        <fieldset>
+          <legend>Στοιχεία επικοινωνίας</legend>
+
+          <p>
+            <label for="company">Επωνυμία</label>
+            <input id="company" name="company" type="text"
+                   autocomplete="organization" required>
+          </p>
+
+          <p>
+            <label for="tax-id">Α.Φ.Μ.</label>
+            <input id="tax-id" name="taxId" type="text" inputmode="numeric"
+                   pattern="[0-9]{9}" maxlength="9" required>
+          </p>
+
+          <p>
+            <label for="phone">Τηλέφωνο</label>
+            <input id="phone" name="phone" type="tel"
+                   autocomplete="tel" required>
+          </p>
+
+          <p>
+            <label for="postal-code">Τ.Κ.</label>
+            <input id="postal-code" name="postalCode" type="text"
+                   inputmode="numeric" autocomplete="postal-code"
+                   pattern="[0-9]{5}" maxlength="5" required>
+          </p>
+        </fieldset>
+
+<button id="submit-request" type="submit" disabled>Υποβολή</button>      </form>
+
+      <nav class="screen-nav" aria-label="Πλοήγηση σελίδας">
+        <a id="request-back" class="back-arrow" href="#services"
+           aria-label="Πίσω στην προηγούμενη οθόνη">←</a>
+        <a class="map-link" href="#map">Χάρτης</a>
+      </nav>
+    </section>
+
+    <section id="confirmation" hidden>
+      <h2>Η δοκιμαστική υποβολή ολοκληρώθηκε</h2>
+      <a href="#home">Επιστροφή στην αρχική</a>
+    </section>
+
+    <section id="map" hidden>
+      <h2>Σημεία εξυπηρέτησης</h2>
+      <p>Επιλέξτε σημείο εξυπηρέτησης</p>
+      <div id="service-map" style="height: 360px; width: 100%;"></div>
+
+      <nav class="screen-nav" aria-label="Πλοήγηση σελίδας">
+        <a class="back-arrow" href="#home" aria-label="Πίσω στην αρχική">←</a>
+      </nav>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const screens = [...document.querySelectorAll('main > section')];
+    const form = document.querySelector('#support-form');
+    const submitButton = document.querySelector('#submit-request');
+    const requestBack = document.querySelector('#request-back');
+    const requiredFields = [...form.querySelectorAll('[required]')];
+    requiredFields.forEach(field => {
+  const row = field.closest('p');
+
+  field.addEventListener('blur', () => {
+    const isEmpty = field.value.trim() === '';
+
+    row.classList.toggle('field-missing', isEmpty);
+
+    if (isEmpty) {
+      field.setAttribute('aria-invalid', 'true');
+    }
+  });
+
+  const clearWarning = () => {
+    if (field.value.trim() !== '') {
+      row.classList.remove('field-missing');
+      field.removeAttribute('aria-invalid');
+    }
+  };
+
+  field.addEventListener('input', clearWarning);
+  field.addEventListener('change', clearWarning);
+});
+
+    let currentScreenId;
+    let serviceMap;
+
+    function updateSubmitButton() {
+      const ready = requiredFields.every(field => {
+        return field.value.trim() !== '' && field.validity.valid;
+      });
+
+      submitButton.disabled = !ready;
+      return ready;
+    }
+
+    function showScreen() {
+      const requestedId = location.hash.slice(1);
+      const screenId = screens.some(screen => screen.id === requestedId)
+        ? requestedId
+        : 'home';
+
+      if (screenId === 'request') {
+        requestBack.href = currentScreenId === 'map' ? '#map' : '#services';
+        updateSubmitButton();
+      }
+
+      screens.forEach(screen => {
+        screen.hidden = screen.id !== screenId;
+      });
+
+      currentScreenId = screenId;
+
+      if (screenId === 'map') {
+        showServiceMap();
+      }
+    }
+
+    function showServiceMap() {
+      if (typeof L === 'undefined') return;
+
+      if (serviceMap) {
+        serviceMap.invalidateSize();
+        return;
+      }
+
+      serviceMap = L.map('service-map');
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(serviceMap);
+
+      const piraeus = [37.942, 23.647];
+      const aspropyrgos = [38.061, 23.589];
+
+      L.marker(piraeus).addTo(serviceMap).bindPopup(
+        '<strong>Σημείο εξυπηρέτησης Πειραιά</strong>' +
+        '<p>Τεχνική διάγνωση και επισκευές</p>' +
+        '<a href="#request">Αίτημα υποστήριξης</a>'
+      );
+
+      L.marker(aspropyrgos).addTo(serviceMap).bindPopup(
+        '<strong>Σημείο εξυπηρέτησης Ασπροπύργου</strong>' +
+        '<p>Προληπτική συντήρηση και επισκευές</p>' +
+        '<a href="#request">Αίτημα υποστήριξης</a>'
+      );
+
+      serviceMap.fitBounds([piraeus, aspropyrgos], { padding: [32, 32] });
+    }
+
+    form.addEventListener('input', updateSubmitButton);
+    form.addEventListener('change', updateSubmitButton);
+    window.addEventListener('pageshow', updateSubmitButton);
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!updateSubmitButton()) return;
+
+      form.reset();
+      updateSubmitButton();
+      location.hash = 'confirmation';
+    });
+
+    window.addEventListener('hashchange', showScreen);
+    showScreen();
+  </script>
+</body>
+</html>

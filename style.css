@@ -258,3 +258,6 @@ main {
   color: #666666;
   cursor: default;
 }
+#map {
+  padding-top: 24px;
+}
